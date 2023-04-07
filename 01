@@ -1,11 +1,22 @@
-import random
-s = "+-/*!&$#?=@abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+import discord
 
-len_pas = int(input("Укажите длинну пароля:"))
+intents = discord.Intents.default()
+intents.message_content = True
+client = discord.Client(intents=intents)
 
-password = ""
+@client.event
+async def on_ready():
+    print(f'We have logged in as {client.user}')
 
-for i in range(len_pas):
-    password += random.choice(s)
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+    if message.content.startswith('$hello'):
+        await message.channel.send("Hi!")
+    elif message.content.startswith('$bye'):
+        await message.channel.send("\\U0001f642")
+    else:
+        await message.channel.send(message.content)
 
-print(password)
+client.run("")
